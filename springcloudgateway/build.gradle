@@ -1,0 +1,66 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.0.M7'
+	}
+	repositories {
+		mavenCentral()
+		maven { url "https://repo.spring.io/snapshot" }
+		maven { url "https://repo.spring.io/milestone" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'scala'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.bytesville.microservices.demo'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
+}
+
+
+ext {
+	springCloudVersion = 'Finchley.M5'
+}
+
+
+task loadTest(type: JavaExec) {
+	dependsOn testClasses
+	description = "load test with Gatling"
+	group = "Load Test"
+	classpath = sourceSets.test.runtimeClasspath
+	main = "io.gatling.app.Gatling"
+	args = [
+			"--simulation", "com.bytesville.microservices.demo.springcloudgateway.GatlingTest",
+			"--results-folder", "${buildDir}/gatling-results",
+			"--bodies-folder", sourceSets.test.resources.srcDirs.toList().first().toString() + "/gatling/bodies",
+	]
+}
+
+dependencies {
+	compile('org.springframework.cloud:spring-cloud-starter-gateway') {
+		exclude module: 'spring-boot-starter-reactor-netty'
+	}
+
+	compile 'org.springframework.boot:spring-boot-starter-jetty'
+
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('io.gatling.highcharts:gatling-charts-highcharts:latest.release')
+
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}

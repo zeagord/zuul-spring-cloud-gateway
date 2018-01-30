@@ -1,0 +1,68 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.9.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+		maven { url "https://repo.spring.io/snapshot" }
+		maven { url "https://repo.spring.io/milestone" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'scala'
+
+group = 'co.th.truemoney.apis.mobilegateway'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
+}
+
+
+ext {
+	springCloudVersion = 'Edgware.RELEASE'
+}
+
+task loadTest(type: JavaExec) {
+	dependsOn testClasses
+	description = "load test with Gatling"
+	group = "Load Test"
+	classpath = sourceSets.test.runtimeClasspath
+	main = "io.gatling.app.Gatling"
+	args = [
+			"--simulation", "com.bytesville.blog.microservices.gateway.GatlingTest",
+			"--results-folder", "${buildDir}/gatling-results",
+			"--bodies-folder", sourceSets.test.resources.srcDirs.toList().first().toString() + "/gatling/bodies",
+	]
+}
+dependencies {
+	compile('org.springframework.cloud:spring-cloud-starter-netflix-zuul') {
+		exclude module: 'spring-boot-starter-tomcat'
+	}
+    compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+	//compile("org.springframework.boot:spring-boot-starter-jetty:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-undertow:${springBootVersion}")
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile('org.springframework.cloud:spring-cloud-starter-netflix-ribbon')
+	compile 'io.micrometer:micrometer-registry-prometheus:latest.release'
+	compile 'io.micrometer:micrometer-spring-legacy:latest.release'
+	compile('org.springframework.cloud:spring-cloud-starter-zipkin')
+	testCompile('io.gatling.highcharts:gatling-charts-highcharts:latest.release')
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}

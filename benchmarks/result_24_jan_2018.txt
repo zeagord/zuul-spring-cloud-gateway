@@ -1,0 +1,227 @@
+
+################################################################################
+############### BENCHMARKS FOR ZUUL GATEWAY and Spring Cloud Gateway ###########
+################################################################################
+
+Conditions: Ramped Up 10,000 Users oven 30 seconds
+Downdstream Service route: https://httpbin.org/get
+
+################################# Zuul Undertow ################################
+################################################################################
+
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                      10000 (OK=4211   KO=5789  )
+> min response time                                      0 (OK=569    KO=0     )
+> max response time                                  37531 (OK=37531  KO=0     )
+> mean response time                                  7585 (OK=18011  KO=0     )
+> std deviation                                      11223 (OK=10551  KO=0     )
+> response time 50th percentile                          0 (OK=16699  KO=0     )
+> response time 75th percentile                      12902 (OK=27193  KO=0     )
+> response time 95th percentile                      33060 (OK=35005  KO=0     )
+> response time 99th percentile                      36600 (OK=37136  KO=0     )
+> mean requests/sec                                142.857 (OK=60.157 KO=82.7  )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                             2 (  0%)
+> 800 ms < t < 1200 ms                                  28 (  0%)
+> t > 1200 ms                                         4181 ( 42%)
+> failed                                              5789 ( 58%)
+---- Errors --------------------------------------------------------------------
+> j.n.ConnectException: connection timed out: localhost/0:0:0:0:   1673 (28.90%)
+0:0:0:1:8765
+> j.n.ConnectException: connection timed out: localhost/127.0.0.   1665 (28.76%)
+1:8765
+> j.n.ConnectException: Failed to open a socket.                   1076 (18.59%)
+> j.n.ConnectException: Connection refused: localhost/0:0:0:0:0:    724 (12.51%)
+0:0:1:8765
+> j.n.ConnectException: Connection refused: localhost/127.0.0.1:    651 (11.25%)
+8765
+================================================================================
+
+################################# Zuul Jetty ###################################
+################################################################################
+
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                      10000 (OK=9776   KO=224   )
+> min response time                                      0 (OK=1      KO=0     )
+> max response time                                  23966 (OK=23966  KO=13587 )
+> mean response time                                  7050 (OK=7150   KO=2664  )
+> std deviation                                       6083 (OK=6070   KO=4912  )
+> response time 50th percentile                       7793 (OK=7901   KO=0     )
+> response time 75th percentile                      11315 (OK=11359  KO=0     )
+> response time 95th percentile                      19203 (OK=19239  KO=12708 )
+> response time 99th percentile                      21322 (OK=21330  KO=13298 )
+> mean requests/sec                                227.273 (OK=222.182 KO=5.091 )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                          2559 ( 26%)
+> 800 ms < t < 1200 ms                                 537 (  5%)
+> t > 1200 ms                                         6680 ( 67%)
+> failed                                               224 (  2%)
+---- Errors --------------------------------------------------------------------
+> j.n.ConnectException: Failed to open a socket.                     93 (41.52%)
+> status.find.in(200,304,201,202,203,204,205,206,207,208,209), b     52 (23.21%)
+ut actually found 500
+> j.n.ConnectException: connection timed out: localhost/0:0:0:0:     47 (20.98%)
+0:0:0:1:8765
+> j.n.ConnectException: connection timed out: localhost/127.0.0.     32 (14.29%)
+1:8765
+================================================================================
+
+################################# Zuul Tomcat ##################################
+################################################################################
+
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                      10000 (OK=9612   KO=388   )
+> min response time                                      0 (OK=1      KO=0     )
+> max response time                                  26768 (OK=26768  KO=10805 )
+> mean response time                                  8449 (OK=8700   KO=2224  )
+> std deviation                                       7898 (OK=7912   KO=4055  )
+> response time 50th percentile                       5875 (OK=7091   KO=0     )
+> response time 75th percentile                      16554 (OK=16678  KO=0     )
+> response time 95th percentile                      18958 (OK=18988  KO=10026 )
+> response time 99th percentile                      23334 (OK=23442  KO=10417 )
+> mean requests/sec                                169.492 (OK=162.915 KO=6.576 )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                          2918 ( 29%)
+> 800 ms < t < 1200 ms                                 568 (  6%)
+> t > 1200 ms                                         6126 ( 61%)
+> failed                                               388 (  4%)
+---- Errors --------------------------------------------------------------------
+> j.n.ConnectException: Failed to open a socket.                    229 (59.02%)
+> status.find.in(200,304,201,202,203,204,205,206,207,208,209), b     90 (23.20%)
+ut actually found 500
+> j.n.ConnectException: connection timed out: localhost/0:0:0:0:     39 (10.05%)
+0:0:0:1:8765
+> j.n.ConnectException: connection timed out: localhost/127.0.0.     30 ( 7.73%)
+1:8765
+================================================================================
+
+################################# Gateway Netty ################################
+################################################################################
+
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                      10000 (OK=8164   KO=1836  )
+> min response time                                      0 (OK=1073   KO=0     )
+> max response time                                  46829 (OK=46829  KO=36378 )
+> mean response time                                 11042 (OK=12848  KO=3009  )
+> std deviation                                       7929 (OK=7101   KO=6257  )
+> response time 50th percentile                      10941 (OK=12201  KO=0     )
+> response time 75th percentile                      14902 (OK=15928  KO=2102  )
+> response time 95th percentile                      26451 (OK=27103  KO=17140 )
+> response time 99th percentile                      30366 (OK=30534  KO=25832 )
+> mean requests/sec                                185.185 (OK=151.185 KO=34    )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                             0 (  0%)
+> 800 ms < t < 1200 ms                                   1 (  0%)
+> t > 1200 ms                                         8163 ( 82%)
+> failed                                              1836 ( 18%)
+---- Errors --------------------------------------------------------------------
+> j.n.ConnectException: connection timed out: localhost/0:0:0:0:    696 (37.91%)
+0:0:0:1:8080
+> status.find.in(200,304,201,202,203,204,205,206,207,208,209), b    496 (27.02%)
+ut actually found 500
+> j.n.ConnectException: connection timed out: localhost/127.0.0.    426 (23.20%)
+1:8080
+> j.n.ConnectException: Failed to open a socket.                    218 (11.87%)
+================================================================================
+
+################################################################################
+################################################################################
+################################################################################
+
+Conditions: Ramped Up 1,000 Users oven 60 seconds
+Downdstream Service route: https://httpbin.org/ip
+
+
+################################# Gateway with Netty ###########################
+################################################################################
+
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                       1000 (OK=881    KO=119   )
+> min response time                                     13 (OK=273    KO=13    )
+> max response time                                   2141 (OK=2141   KO=285   )
+> mean response time                                   330 (OK=361    KO=99    )
+> std deviation                                        156 (OK=139    KO=30    )
+> response time 50th percentile                        299 (OK=303    KO=104   )
+> response time 75th percentile                        328 (OK=336    KO=115   )
+> response time 95th percentile                        621 (OK=623    KO=126   )
+> response time 99th percentile                        685 (OK=701    KO=131   )
+> mean requests/sec                                 16.393 (OK=14.443 KO=1.951 )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                           877 ( 88%)
+> 800 ms < t < 1200 ms                                   2 (  0%)
+> t > 1200 ms                                            2 (  0%)
+> failed                                               119 ( 12%)
+---- Errors --------------------------------------------------------------------
+> status.find.in(200,304,201,202,203,204,205,206,207,208,209), b    119 (100.0%)
+ut actually found 500
+================================================================================
+
+################################# Zuul Tomcat ##################################
+################################################################################
+
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                       1000 (OK=1000   KO=0     )
+> min response time                                    281 (OK=281    KO=-     )
+> max response time                                   1256 (OK=1256   KO=-     )
+> mean response time                                   374 (OK=374    KO=-     )
+> std deviation                                         83 (OK=83     KO=-     )
+> response time 50th percentile                        363 (OK=363    KO=-     )
+> response time 75th percentile                        395 (OK=395    KO=-     )
+> response time 95th percentile                        461 (OK=461    KO=-     )
+> response time 99th percentile                        770 (OK=770    KO=-     )
+> mean requests/sec                                 16.393 (OK=16.393 KO=-     )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                           990 ( 99%)
+> 800 ms < t < 1200 ms                                   9 (  1%)
+> t > 1200 ms                                            1 (  0%)
+> failed                                                 0 (  0%)
+================================================================================
+
+################################# Zuul Jetty ###################################
+################################################################################
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                       1000 (OK=1000   KO=0     )
+> min response time                                    277 (OK=277    KO=-     )
+> max response time                                   3930 (OK=3930   KO=-     )
+> mean response time                                   497 (OK=497    KO=-     )
+> std deviation                                        472 (OK=472    KO=-     )
+> response time 50th percentile                        397 (OK=397    KO=-     )
+> response time 75th percentile                        434 (OK=434    KO=-     )
+> response time 95th percentile                       1016 (OK=1016   KO=-     )
+> response time 99th percentile                       3181 (OK=3181   KO=-     )
+> mean requests/sec                                 16.393 (OK=16.393 KO=-     )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                           942 ( 94%)
+> 800 ms < t < 1200 ms                                  13 (  1%)
+> t > 1200 ms                                           45 (  5%)
+> failed                                                 0 (  0%)
+================================================================================
+
+
+################################# Zuul Undertow ################################
+################################################################################
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                       1000 (OK=1000   KO=0     )
+> min response time                                    334 (OK=334    KO=-     )
+> max response time                                   4256 (OK=4256   KO=-     )
+> mean response time                                   581 (OK=581    KO=-     )
+> std deviation                                        563 (OK=563    KO=-     )
+> response time 50th percentile                        438 (OK=438    KO=-     )
+> response time 75th percentile                        485 (OK=485    KO=-     )
+> response time 95th percentile                       1694 (OK=1694   KO=-     )
+> response time 99th percentile                       3562 (OK=3562   KO=-     )
+> mean requests/sec                                 16.393 (OK=16.393 KO=-     )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                           927 ( 93%)
+> 800 ms < t < 1200 ms                                  13 (  1%)
+> t > 1200 ms                                           60 (  6%)
+> failed                                                 0 (  0%)
+================================================================================
