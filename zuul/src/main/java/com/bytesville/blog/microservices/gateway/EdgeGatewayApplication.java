@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableCircuitBreaker                       // Enabling the Circuit breaker to handle the failures in a graceful way
 @RestController
 @EnableScheduling
-public class MobileGatewayApplication {
+public class EdgeGatewayApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MobileGatewayApplication.class, args);
+		SpringApplication.run(EdgeGatewayApplication.class, args);
 	}
 
 	@Bean

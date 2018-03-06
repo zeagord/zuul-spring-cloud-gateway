@@ -18,43 +18,10 @@ import java.io.InputStream;
  */
 @Component
 public class FallbackComponent implements FallbackProvider {
-    @Override
-    public ClientHttpResponse fallbackResponse(Throwable cause) {
-        ClientHttpResponse response = new ClientHttpResponse() {
-            @Override
-            public HttpStatus getStatusCode() throws IOException {
-                return HttpStatus.OK;
-            }
-
-            @Override
-            public int getRawStatusCode() throws IOException {
-                return HttpStatus.OK.value();
-            }
-
-            @Override
-            public String getStatusText() throws IOException {
-                return "Ok";
-            }
-
-            @Override
-            public void close() {
-
-            }
-
-            @Override
-            public InputStream getBody() throws IOException {
-                return new ByteArrayInputStream(("{\"status\": \"error\", \"code\": 2005}").getBytes());
-            }
-
-            @Override
-            public HttpHeaders getHeaders() {
-                HttpHeaders httpHeaders = new HttpHeaders();
-                httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-                return httpHeaders;
-            }
-        };
-        return response;
-    }
+//    @Override
+//    public ClientHttpResponse fallbackResponse(Throwable cause) {
+//
+//    }
 
     @Override
     public String getRoute() {
@@ -62,7 +29,7 @@ public class FallbackComponent implements FallbackProvider {
     }
 
     @Override
-    public ClientHttpResponse fallbackResponse() {
+    public ClientHttpResponse fallbackResponse(String route, Throwable cause) {
         ClientHttpResponse response = new ClientHttpResponse() {
             @Override
             public HttpStatus getStatusCode() throws IOException {
@@ -98,4 +65,42 @@ public class FallbackComponent implements FallbackProvider {
         };
         return response;
     }
+
+//    @Override
+//    public ClientHttpResponse fallbackResponse() {
+//        ClientHttpResponse response = new ClientHttpResponse() {
+//            @Override
+//            public HttpStatus getStatusCode() throws IOException {
+//                return HttpStatus.OK;
+//            }
+//
+//            @Override
+//            public int getRawStatusCode() throws IOException {
+//                return HttpStatus.OK.value();
+//            }
+//
+//            @Override
+//            public String getStatusText() throws IOException {
+//                return "Ok";
+//            }
+//
+//            @Override
+//            public void close() {
+//
+//            }
+//
+//            @Override
+//            public InputStream getBody() throws IOException {
+//                return new ByteArrayInputStream(("{\"status\": \"error\", \"code\": 2005}").getBytes());
+//            }
+//
+//            @Override
+//            public HttpHeaders getHeaders() {
+//                HttpHeaders httpHeaders = new HttpHeaders();
+//                httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+//                return httpHeaders;
+//            }
+//        };
+//        return response;
+//    }
 }
