@@ -7,4 +7,7 @@
  * in the user guide at https://docs.gradle.org/4.5/userguide/multi_project_builds.html
  */
 
-rootProject.name = 'zuul_gateway'
+rootProject.name = 'zuul_spring_gateway'
+rootProject.name = 'parent'
+include 'springcloudgateway'
+include 'zuul'

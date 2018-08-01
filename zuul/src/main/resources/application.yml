@@ -9,95 +9,13 @@ server:
 
 ---
 
-#Force Zuul to follow original encoding in the query params to make it compatible with picky old WebServers
 zuul:
   prefix: /api
-  forceOriginalQueryStringEncoding: true
+  #forceOriginalQueryStringEncoding: true
   ignoredServices: "*"
   routes:
     myservice:
       path: /myservice/**
       serviceId: myservice
-      # Ideal and preferred way to use is to use serviceID along with Eureka instead of URL.
-      # Nevertheless, if the platform takes care of the service discovery,
-      # we can very use and prefer that to take care of the discovery, load balancing
-      #url: https://httpbin.org/
-    gateway:
-      serviceId: gateway
-      path: /self/**
-      #url: http://localhost:8765/
+      url: http://httpbin.org/
 
----
-
-# Zuul along with circuit breaker works better with Client side service discovery Eureka, If Eureka not used
-# The server url details has to be given. And for the Hystrix to work, we need to enable Ribbon Client-Side Load Balancing.
-# Without Ribbon Hystrix doesn't work.
-# Reference: https://stackoverflow.com/questions/41624601/zuul-hystrix-stream-without-using-serviceid
-ribbon:
-  eureka:
-    enabled: false
-
----
-
-gateway:
-  ribbon:
-    listOfServers: localhost:8765
-myservice:
-  ribbon:
-    listOfServers: httpbin.org
----
-
-hystrix:
-  threadpool:
-    default:
-      # Maximum number of concurrent requests when using thread pools (Default: 10)
-      coreSize: 100
-      # Maximum LinkedBlockingQueue size - -1 for using SynchronousQueue (Default: -1) and Positive Integer for LinkedBlockingQueue to use FIFO
-      maxQueueSize: 100
-      # Queue size rejection threshold (Default: 5)
-      queueSizeRejectionThreshold: 50
-    metrics:
-      rollingStats:
-        # Default value 10 seconds
-        timeInMilliseconds: 8000
-  command:
-    default:
-      circuitBreaker:
-        sleepWindowInMilliseconds: 5000 # Check the circuit is closed after 5 seconds
-        requestVolumeThreshold: 10      # No of requests required to trip the circuit
-        errorThresholdPercentage: 20    # Error percent to trip circuit and go to fallback logic
-      execution:
-        isolation:
-#          strategy: SEMAPHORE, no thread pool but timeout handling stops to work
-          strategy: THREAD
-          thread:
-            timeoutInMilliseconds: 10000     # 10 Seconds after which fallback executed
----
-
-endpoints:
-  restart:
-    enabled: true
-  shutdown:
-    enabled: true
-  health:
-    sensitive: false
----
-
-logging:
-  level:
-    ROOT: INFO
-
----
-
-management:
-  security:
-    enabled: false
-
-spring:
-  metrics:
-    prometheus:
-      enabled: true
-  filter:
-    hystrix:
-      latency:
-        percentiles: 0.50,0.95,0.999

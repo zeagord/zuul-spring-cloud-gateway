@@ -1,77 +1,11 @@
-buildscript {
-	ext {
-		springBootVersion = '2.0.0.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-		maven { url "https://repo.spring.io/snapshot" }
-		maven { url "https://repo.spring.io/milestone" }
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
-}
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-//apply plugin: 'scala'
-
-group = 'com.bytesville.blog.microservices.gateway'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.9
-
-repositories {
-	mavenCentral()
-	maven { url "https://repo.spring.io/snapshot" }
-	maven { url "https://repo.spring.io/milestone" }
-}
-
-
-ext {
-	springCloudVersion = 'Finchley.M8'
-}
-
-//task loadTest(type: JavaExec) {
-//	dependsOn testClasses
-//	description = "load test with Gatling"
-//	group = "Load Test"
-//	classpath = sourceSets.test.runtimeClasspath
-//	main = "io.gatling.app.Gatling"
-//	args = [
-//			"--simulation", "com.bytesville.blog.microservices.gateway.GatlingTest",
-//			"--results-folder", "${buildDir}/gatling-results",
-//			"--bodies-folder", sourceSets.test.resources.srcDirs.toList().first().toString() + "/gatling/bodies",
-//	]
-//}
 dependencies {
-//	compile('org.springframework.cloud:spring-cloud-starter-netflix-zuul') {
-//		exclude module: 'spring-boot-starter-tomcat'
-//	}
-//	compile('org.springframework.cloud:spring-cloud-starter-netflix-zuul')
-//    compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
-//    compile('org.springframework.boot:spring-boot-starter-actuator')
-//	//compile("org.springframework.boot:spring-boot-starter-jetty:${springBootVersion}")
-//    //compile("org.springframework.boot:spring-boot-starter-undertow:${springBootVersion}")
-//	testCompile('org.springframework.boot:spring-boot-starter-test')
-//	compile('org.springframework.cloud:spring-cloud-starter-netflix-ribbon')
-//	compile 'io.micrometer:micrometer-registry-prometheus:1.0.0-rc.9'
-//	//Micrometer not required for Springboot 2 since it is already available
-//	//compile 'io.micrometer:micrometer-spring-legacy:latest.release'
-//	compile('org.springframework.cloud:spring-cloud-starter-zipkin')
-//	testCompile('io.gatling.highcharts:gatling-charts-highcharts:latest.release')
-
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
 	compile('org.springframework.cloud:spring-cloud-starter-netflix-ribbon')
 	compile('org.springframework.cloud:spring-cloud-starter-zipkin')
 	compile('org.springframework.cloud:spring-cloud-starter-netflix-zuul')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-	// https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
-	compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.11'
-
-
 }
 
 dependencyManagement {
@@ -79,9 +13,3 @@ dependencyManagement {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
 }
-
-//	applicationDefaultJvmArgs = ["-DTZ=GMT",
-//							 "-Dcom.sun.management.jmxremote",
-//							 "-Dcom.sun.management.jmxremote.local.only=false",
-//							 "-Deureka.validateInstanceId=false",
-//							 "-Deureka.mt.num_retries=1"]
